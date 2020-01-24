@@ -36,7 +36,7 @@ public class SSHManager : MonoBehaviour
     {
         credentials = new SSHCredentials()
         {
-            Usernamer = username,
+            Username = username,
             Password = password,
             Ip = ip
         };
@@ -51,7 +51,7 @@ public class SSHManager : MonoBehaviour
 
         try
         {
-            using (var client = new SshClient(credentials.Ip, credentials.Usernamer, credentials.Password))
+            using (var client = new SshClient(credentials.Ip, credentials.Username, credentials.Password))
             {
                 client.Connect();
                 client.RunCommand(command);
