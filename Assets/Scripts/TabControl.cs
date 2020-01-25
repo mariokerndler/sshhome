@@ -29,9 +29,9 @@ public class TabControl : MonoBehaviour
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.Return))
-        {
-            SSHUI.Instance.SendRequest();
-        }
+        //if(Input.GetKeyDown(KeyCode.Return))
+        //{
+        //    SSHUI.Instance.SendRequest();
+        //}
     }
 }

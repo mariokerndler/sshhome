@@ -65,4 +65,40 @@ public class SSHManager : MonoBehaviour
         }
         
     }
+
+    public SSHCredentials SaveCredentials(string command, string encryptionKey, string username, string password, string ip)
+    {
+        SSHCredentials credentials = new SSHCredentials()
+        {
+            Username = username,
+            Password = password.Encrypt(encryptionKey),
+            Ip = ip,
+            EncryptionKey = encryptionKey
+        };
+
+        PlayerPrefs.SetString("command", command);
+        PlayerPrefs.SetString("encryptionKey", encryptionKey);
+        PlayerPrefs.SetString("username", username);
+        PlayerPrefs.SetString("password", password.Encrypt(encryptionKey));
+        PlayerPrefs.SetString("ip", ip);
+        PlayerPrefs.Save();
+
+        return credentials;
+    }
+
+    public (SSHCredentials, string) LoadCredentials()
+    {
+        string encryptionkey = PlayerPrefs.GetString("encryptionKey");
+        string loadedCommand = PlayerPrefs.GetString("command");
+
+        SSHCredentials credentials = new SSHCredentials()
+        {
+            Username = PlayerPrefs.GetString("username"),
+            Password = PlayerPrefs.GetString("password").Decrypt(encryptionkey),
+            Ip = PlayerPrefs.GetString("ip"),
+            EncryptionKey = encryptionkey
+        };
+
+        return (credentials, loadedCommand);
+    }
 }

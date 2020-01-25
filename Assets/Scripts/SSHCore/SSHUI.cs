@@ -51,22 +51,9 @@ public class SSHUI : MonoBehaviour
 
     public void SendRequest()
     {
-        if (string.IsNullOrEmpty(username.text.Trim()) && string.IsNullOrEmpty(username.text.Trim()) && string.IsNullOrEmpty(username.text.Trim())) return;
+        if (string.IsNullOrEmpty(username?.text.Trim()) && string.IsNullOrEmpty(username?.text.Trim()) && string.IsNullOrEmpty(username?.text.Trim())) return;
 
-        credentials = new SSHCredentials()
-        {
-            Username = username.text.Trim(),
-            Password = password.text.Trim(),
-            Ip = ip.text.Trim(),
-            EncryptionKey = Guid.NewGuid().ToString()
-        };
-
-        PlayerPrefs.SetString("command", command.text.Trim());
-        PlayerPrefs.SetString("encryptionKey", credentials.EncryptionKey);
-        PlayerPrefs.SetString("username", username.text.Trim());
-        PlayerPrefs.SetString("password", password.text.Trim().Encrypt(credentials.EncryptionKey));
-        PlayerPrefs.SetString("ip", ip.text.Trim());
-        PlayerPrefs.Save();
+        credentials = SSHManager.Instance.SaveCredentials(command.text.Trim(), Guid.NewGuid().ToString(), username.text.Trim(), password.text.Trim(), ip.text.Trim());
 
         SSHResponse sshResponse = SSHManager.Instance.SendCommand(command.text.Trim(), credentials);
         if(sshResponse.Success)
@@ -82,23 +69,18 @@ public class SSHUI : MonoBehaviour
 
     private void LoadCredentials()
     {
-        string encryptionkey = PlayerPrefs.GetString("encryptionKey");
-        string loadedUsername = PlayerPrefs.GetString("username");
-        string loadedPassword = PlayerPrefs.GetString("password").Decrypt(encryptionkey);
-        string loadedIp = PlayerPrefs.GetString("ip");
-        string loadedCommand = PlayerPrefs.GetString("command");
+        (SSHCredentials, string) result = SSHManager.Instance.LoadCredentials();
+        username.text = result.Item1.Username;
+        password.text = result.Item1.Password;
+        ip.text = result.Item1.Ip;
+        command.text = result.Item2;
 
-        username.text = loadedUsername;
-        password.text = loadedPassword;
-        ip.text = loadedIp;
-        command.text = loadedCommand;
-
-        credentials = new SSHCredentials()
-        {
-            Username = loadedUsername,
-            Password = loadedPassword,
-            Ip = loadedIp,
-            EncryptionKey = encryptionkey
-        };
+        credentials = result.Item1;
     }
+
+    private void OnApplicationQuit()
+    {
+        credentials = SSHManager.Instance.SaveCredentials(command.text.Trim(), Guid.NewGuid().ToString(), username.text.Trim(), password.text.Trim(), ip.text.Trim());
+    }
+
 }
