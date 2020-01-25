@@ -7,6 +7,30 @@ using System;
 
 public class SSHUI : MonoBehaviour
 {
+    #region Singleton
+    private static SSHUI instance = null;
+    private static readonly object padlock = new object();
+
+    SSHUI() { }
+
+    public static SSHUI Instance {
+        get {
+            if (instance == null)
+            {
+                lock (padlock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new SSHUI();
+                    }
+                }
+            }
+
+            return instance;
+        }
+    }
+    #endregion
+
     public TMP_InputField username;
     public TMP_InputField password;
     public TMP_InputField ip;
