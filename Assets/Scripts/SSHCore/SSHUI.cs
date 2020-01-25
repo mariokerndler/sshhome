@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Threading.Tasks;
 
 public class SSHUI : MonoBehaviour
 {
@@ -51,12 +52,35 @@ public class SSHUI : MonoBehaviour
 
     public void SendRequest()
     {
-        if (string.IsNullOrEmpty(username?.text.Trim()) && string.IsNullOrEmpty(username?.text.Trim()) && string.IsNullOrEmpty(username?.text.Trim())) return;
+        //if (string.IsNullOrEmpty(username?.text.Trim()) && string.IsNullOrEmpty(username?.text.Trim()) && string.IsNullOrEmpty(username?.text.Trim())) return;
+        //response.text = "";
+        //credentials = SSHManager.Instance.SaveCredentials(command.text.Trim(), Guid.NewGuid().ToString(), username.text.Trim(), password.text.Trim(), ip.text.Trim());
 
+        ////SSHResponse sshResponse = SSHManager.Instance.SendCommand(command.text.Trim(), credentials);
+        //SSHResponse sshResponse = SSHManager.Instance.SendCommandAsync(command.text.Trim(), credentials);
+
+        //if (sshResponse.Success)
+        //{
+        //    response.color = successColor;
+        //}
+        //else
+        //{
+        //    response.color = failureColor;
+        //}
+
+        //response.text = sshResponse.Message;
+        response.text = "";
+        StartCoroutine("SendRoutine");
+    }
+
+    public IEnumerator SendRoutine()
+    {
+        if (string.IsNullOrEmpty(username?.text.Trim()) && string.IsNullOrEmpty(username?.text.Trim()) && string.IsNullOrEmpty(username?.text.Trim())) yield return null;
         credentials = SSHManager.Instance.SaveCredentials(command.text.Trim(), Guid.NewGuid().ToString(), username.text.Trim(), password.text.Trim(), ip.text.Trim());
 
         SSHResponse sshResponse = SSHManager.Instance.SendCommand(command.text.Trim(), credentials);
-        if(sshResponse.Success)
+
+        if (sshResponse.Success)
         {
             response.color = successColor;
         }
@@ -64,7 +88,9 @@ public class SSHUI : MonoBehaviour
         {
             response.color = failureColor;
         }
-            response.text = sshResponse.Message;
+
+        response.text = sshResponse.Message;
+        yield return null;
     }
 
     private void LoadCredentials()

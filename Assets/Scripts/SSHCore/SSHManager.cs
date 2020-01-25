@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class SSHManager : MonoBehaviour
@@ -63,7 +64,16 @@ public class SSHManager : MonoBehaviour
         {
             return new SSHResponse(false, e.Message, e);
         }
-        
+    }
+
+    public SSHResponse SendCommandAsync(string command, SSHCredentials credentials)
+    {
+        SSHResponse value = new SSHResponse(false, "Error while running thread");
+        Thread t = new Thread(() => { value = SendCommand(command, credentials); });
+        t.Start();
+        t.Join();
+
+        return value;
     }
 
     public SSHCredentials SaveCredentials(string command, string encryptionKey, string username, string password, string ip)
