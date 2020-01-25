@@ -37,6 +37,8 @@ public class SSHUI : MonoBehaviour
 
     public TMP_InputField command;
     public TMP_Text response;
+    public Color successColor = Color.green;
+    public Color failureColor = Color.red;
 
     private SSHCredentials credentials;
 
@@ -67,7 +69,15 @@ public class SSHUI : MonoBehaviour
         PlayerPrefs.Save();
 
         SSHResponse sshResponse = SSHManager.Instance.SendCommand(command.text.Trim(), credentials);
-        response.text = sshResponse.Message;
+        if(sshResponse.Success)
+        {
+            response.color = successColor;
+        }
+        else
+        {
+            response.color = failureColor;
+        }
+            response.text = sshResponse.Message;
     }
 
     private void LoadCredentials()
