@@ -2067,8 +2067,8 @@ MonoBehaviour:
   ip: {fileID: 810215047}
   command: {fileID: 354352165}
   response: {fileID: 2095640999}
-  successColor: {r: 0, g: 1, b: 0, a: 1}
-  failureColor: {r: 1, g: 0, b: 0, a: 1}
+  successColor: {r: 0.38416696, g: 0.8396226, b: 0.38416696, a: 1}
+  failureColor: {r: 0.8490566, g: 0.35644355, b: 0.35644355, a: 1}
 --- !u!4 &1311375307
 Transform:
   m_ObjectHideFlags: 0
@@ -3625,8 +3625,8 @@ MonoBehaviour:
   m_VerticalScrollbar: {fileID: 0}
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
